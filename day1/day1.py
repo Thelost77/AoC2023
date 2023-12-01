@@ -10,7 +10,6 @@ string_digits = {
     'seven': '7',
     'eight': '8',
     'nine': '9',
-    'zero': '0',
 }
 
 def replace_first_occurrence(s, old, new):
@@ -21,40 +20,34 @@ def replace_first_occurrence(s, old, new):
 
 def find_in_string_digits(c, index, word, digits):
     for digit in filter(lambda x: x[0] == c, string_digits.keys()):
-        if word.find(digit) == index:
+        if word[index:-1].find(digit) == 0:
             digits.append(string_digits[digit])
-            return replace_first_occurrence(word, digit, '')
-    return None
-
+            return len(digit) - 1 
+    return 1
+# Problem jest taki, ze tutaj jak jest np. threeight to powinno to rozponać jako 3 i 8, a u mnie usuwa tą 3
 def find_digit_in_word(word, digits):
-    if word == '' or word == '\n':
-        return digits
-    new_word = ''
-    for i in range(len(word)):
+    i = 0
+    while i < len(word):         
         c = word[i]
+        if c == '' or c == '\n':
+            break
         if c.isnumeric():
             digits.append(c)
-            new_word = replace_first_occurrence(word, c, '')
-            break
+            i += 1
         else:
-            temp = find_in_string_digits(c, i, word, digits)
-            if temp != None:
-                new_word = temp
-                break
-        new_word = replace_first_occurrence(word, c, '')
-        break
-    return find_digit_in_word(new_word, digits)
+            i += find_in_string_digits(c, i, word, digits)
 
-file = open(os.path.dirname(__file__) + '\\input.txt', 'r')
+file = open(os.path.dirname(__file__) + '/input.txt', 'r')
 
 values = []
 for line in file.readlines():
     digits = []
 
     find_digit_in_word(line, digits)
-    values.append(int(digits[0] + digits[-1]))
+    if len(digits) > 0:
+        values.append(int(digits[0] + digits[-1]))
 
-# print(sum(values));
+print(sum(values));
     
 import re
 
@@ -77,14 +70,9 @@ def replace_words(text):
 
 def calibration(text):
     return [int(l[0] + l[-1]) for l in re.sub(r"[A-z]", "", text).split("\n")]
-file = open(os.path.dirname(__file__) + '\\input.txt', 'r')
+file = open(os.path.dirname(__file__) + '/input.txt', 'r')
 text = file.read()
-# print(calibration(text))
-# print()
+print(calibration(text))
 good_values = calibration(replace_words(text))
 
-for i in range(1000):
-    if good_values[i] != values[i]:
-        print(i)
-        # print(good_values[i])
-        # print(values[i])
+print(sum(good_values))
