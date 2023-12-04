@@ -1,6 +1,6 @@
 import os
 
-file = open(os.path.dirname(__file__) + '/input.txt', 'r')
+file = open(os.path.dirname(__file__) + '/test1.txt', 'r')
 lines = file.readlines()
 
 class NewLine:
@@ -36,3 +36,21 @@ for i in range(len(new_lines)):
 print(sum(values))
 print(sum(list(map(lambda x: x.iterations, new_lines))))
     
+# Eleganckie rozwiązanie z reddita
+s = 0
+cards = [1 for _ in lines]
+
+for index, line in enumerate(lines):
+    line = line.split(":")[1]
+    a, b = line.split("|")
+    a, b = a.split(), b.split()
+
+    n = len(set(a) & set(b))
+
+    if n > 0:
+        s += 2 ** (n - 1)
+
+    for i in range(n):
+        cards[index + i + 1] += cards[index]
+
+print(s, sum(cards))
