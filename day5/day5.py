@@ -1,4 +1,5 @@
 import os
+import threading
 import numpy as np
 
 file = open(os.path.dirname(__file__) + '/input.txt', 'r')
@@ -107,21 +108,33 @@ def vectorization(num):
     seed = get_seed(num)
     return is_in_seeds(seeds, seed)
 
-a = 10000
-j = 29
-prev_max = 0
-while j <= 10000:
-    max = int((smallest + length) * j / (a))
+results = []
+def calculate(part, prev_part):
+    max = int((smallest + length) * part)
+    prev_max = int((smallest + length) * prev_part)
     array = np.arange(prev_max,  max, 1)
     print(len(array))
     vectorized_func = np.vectorize(vectorization)
     result_array = vectorized_func(array)
     for i in range(len(result_array)):
         if result_array[i] == True:
-            print("Smallest location = ", array[i])
-    print(j / a * 100, " %")
-    j += 1
-    prev_max = max
+            results.append(array[i])
+            return
+        
+threads = []
+for i in range(1, 100):
+    t = threading.Thread(target=calculate, args=(i / 100, (i - 1) / 100))
+    t.daemon = True;
+    threads.append(t);
+
+for i in range(100):
+    threads[i].start()
+
+for i in range(100):
+    threads[i].join()
+
+print(results)
+
 
 # for j in range(len(result_array)):
 #     if result_array[j] < min_location:
