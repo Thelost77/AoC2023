@@ -120,17 +120,17 @@ def calculate(part, prev_part):
         if result_array[i] == True:
             results.append(array[i])
             return
-        
+
 threads = []
-for i in range(1, 100):
-    t = threading.Thread(target=calculate, args=(i / 100, (i - 1) / 100))
+for i in range(1, 17):
+    t = threading.Thread(target=calculate, args=(i / 16, (i - 1) / 16))
     t.daemon = True;
     threads.append(t);
 
-for i in range(100):
+for i in range(16):
     threads[i].start()
 
-for i in range(100):
+for i in range(16):
     threads[i].join()
 
 print(results)
