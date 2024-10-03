@@ -47,7 +47,7 @@ def get_hand_type(hand):
         if v == 3:
             return hand_types['THREE_OF_A_KIND']
         if v == 2 and len(list(filter(lambda x: chars_nums[x] == 2 and x != c, chars_nums))) > 0:
-            return hand_types['TWO_PAIR']
+
         if v == 2 and len(list(filter(lambda x: chars_nums[x] == 2 and x != c, chars_nums))) == 0:
             return hand_types['ONE_PAIR']
         else:
