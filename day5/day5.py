@@ -104,36 +104,37 @@ def is_in_seeds(seeds, value):
     return False
 
 
-def vectorization(num):
-    seed = get_seed(num)
-    return is_in_seeds(seeds, seed)
+print(get_seed(15880236))
+# def vectorization(num):
+#     seed = get_seed(num)
+#     return is_in_seeds(seeds, seed)
 
-results = []
-def calculate(part, prev_part):
-    max = int((smallest + length) * part)
-    prev_max = int((smallest + length) * prev_part)
-    array = np.arange(prev_max,  max, 1)
-    print(len(array))
-    vectorized_func = np.vectorize(vectorization)
-    result_array = vectorized_func(array)
-    for i in range(len(result_array)):
-        if result_array[i] == True:
-            results.append(array[i])
-            return
+# results = []
+# def calculate(part, prev_part):
+#     max = int((smallest + length) * part)
+#     prev_max = int((smallest + length) * prev_part)
+#     array = np.arange(prev_max,  max, 1)
+#     print(len(array))
+#     vectorized_func = np.vectorize(vectorization)
+#     result_array = vectorized_func(array)
+#     for i in range(len(result_array)):
+#         if result_array[i] == True:
+#             results.append(array[i])
+#             return
 
-threads = []
-for i in range(1, 17):
-    t = threading.Thread(target=calculate, args=(i / 16, (i - 1) / 16))
-    t.daemon = True;
-    threads.append(t);
+# threads = []
+# for i in range(1, 17):
+#     t = threading.Thread(target=calculate, args=(i / 16, (i - 1) / 16))
+#     t.daemon = True;
+#     threads.append(t);
 
-for i in range(16):
-    threads[i].start()
+# for i in range(16):
+#     threads[i].start()
 
-for i in range(16):
-    threads[i].join()
+# for i in range(16):
+#     threads[i].join()
 
-print(results)
+# print(results)
 
 
 # for j in range(len(result_array)):
